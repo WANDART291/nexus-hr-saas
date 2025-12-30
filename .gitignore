@@ -1,0 +1,17 @@
+# Ignore Virtual Environment (Critical)
+venv/
+env/
+.env
+
+# Ignore Python compiled files
+__pycache__/
+*.pyc
+
+# Ignore Local Database Data (If any)
+db.sqlite3
+pgdata/
+postgres_data/
+*.log
+
+# Ignore OS files
+.DS_Store

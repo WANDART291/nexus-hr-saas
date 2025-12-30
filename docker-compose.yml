@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      redis:
+        condition: service_started
+      db:
+        condition: service_healthy  # <--- THIS IS THE MAGIC FIX
+    environment:
+      - DATABASE_URL=postgres://nexus_user:admin123@db:5432/nexus_hr_db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: nexus_hr_db
+      POSTGRES_USER: nexus_user
+      POSTGRES_PASSWORD: admin123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:  # <--- This checks if DB is ready every 5 seconds
+      test: ["CMD-SHELL", "pg_isready -U nexus_user -d nexus_hr_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+
+volumes:
+  postgres_data:
