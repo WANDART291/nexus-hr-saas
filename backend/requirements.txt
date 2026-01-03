@@ -20,3 +20,5 @@ tzdata==2025.3
 djangorestframework
 django-cors-headers
 djangorestframework-simplejwt
+gunicorn
+dj-database-url
