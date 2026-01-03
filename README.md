@@ -153,6 +153,9 @@ It automates the most complex parts of HR: payroll taxation logic, real-time lea
 * **Authentication:** JWT (JSON Web Tokens)
 * **Database:** PostgreSQL (Relational Data Integrity)
 
+## 🏗️ Database Architecture
+![ERD Diagram](./docs/erd_diagram.png)
+
 ### **DevOps & Infrastructure**
 * **Containerization:** Docker & Docker Compose (Multi-container orchestration)
 * **Storage:** WhiteNoise for static asset serving

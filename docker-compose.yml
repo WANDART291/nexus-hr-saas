@@ -2,17 +2,17 @@ version: '3.8'
 
 services:
   web:
-    build: .
+    build: ./backend         # <--- UPDATED: Looks inside the new 'backend' folder
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/app
+      - ./backend:/app       # <--- UPDATED: Syncs only the 'backend' folder
     ports:
       - "8000:8000"
     depends_on:
       redis:
         condition: service_started
       db:
-        condition: service_healthy  # <--- THIS IS THE MAGIC FIX
+        condition: service_healthy
     environment:
       - DATABASE_URL=postgres://nexus_user:admin123@db:5432/nexus_hr_db
 
@@ -24,7 +24,7 @@ services:
       POSTGRES_PASSWORD: admin123
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    healthcheck:  # <--- This checks if DB is ready every 5 seconds
+    healthcheck:
       test: ["CMD-SHELL", "pg_isready -U nexus_user -d nexus_hr_db"]
       interval: 5s
       timeout: 5s
