@@ -1,4 +1,6 @@
 import os
+from pathlib import Path
+from datetime import timedelta
 
 """
 Django settings for config project.
@@ -11,8 +13,6 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
-from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-je0lq1l+_tp9%p+8@#=lq!l=!yumds!tegn@_b!5m5ifb3412s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Allow all hosts for Docker development
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -40,8 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-
+    # Third-Party Apps
     'graphene_django',
+    'rest_framework',
+    'rest_framework_simplejwt', # Use simplejwt for token auth
+    'corsheaders',              # Required for React to talk to Django
 
     # Local Apps
     'core',
@@ -52,6 +56,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', # <--- MUST be at the top
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -140,6 +145,28 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# --- CORS SETTINGS (Crucial for React) ---
+CORS_ALLOW_ALL_ORIGINS = True # Allow all origins for development
+CORS_ALLOW_CREDENTIALS = True
+
+# --- REST FRAMEWORK SETTINGS ---
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication', # Optional: useful for admin panel
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+# --- JWT SETTINGS ---
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1), # Long token for dev convenience
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+}
+
+# --- GRAPHQL SETTINGS ---
 GRAPHENE = {
     "SCHEMA": "config.schema.schema",
     "MIDDLEWARE": [

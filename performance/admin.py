@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import PerformanceReview, Goal
 
-# Register your models here.
+admin.site.register(PerformanceReview)
+admin.site.register(Goal)
