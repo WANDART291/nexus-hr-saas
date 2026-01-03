@@ -22,3 +22,4 @@ django-cors-headers
 djangorestframework-simplejwt
 gunicorn
 dj-database-url
+whitenoise
