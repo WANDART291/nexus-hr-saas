@@ -1,214 +1,275 @@
-# Nexus HR - Enterprise Workforce Management System
+# 🏢 Nexus HR – Full‑Stack HR & Payroll SaaS Platform
 
-![Status](https://img.shields.io/badge/Status-Production_Ready-brightgreen)
-![React](https://img.shields.io/badge/Frontend-React_18-61DAFB)
-![Django](https://img.shields.io/badge/Backend-Django_Rest_Framework-green)
-![Database](https://img.shields.io/badge/Database-PostgreSQL-336791)
-![Docker](https://img.shields.io/badge/Deployment-Docker_Containerized-2496ed)
+> **Production‑ready workforce management system built to demonstrate real‑world SaaS architecture, business logic, and scalable full‑stack development.**
 
-**Nexus HR** is a complete, full-stack SaaS platform designed to modernize workforce management. Unlike simple administrative tools, Nexus HR provides a **decoupled microservices architecture** combining a high-performance **React** frontend with a robust **Django** calculation engine.
+Nexus HR is a complete Human Resources & Payroll management platform designed for small to medium‑sized organizations. It goes beyond CRUD operations by implementing real business rules, secure authentication, and relational data integrity, similar to what real clients require in production systems.
 
-It automates the most complex parts of HR: payroll taxation logic, real-time leave conflict detection, and secure employee data management.
+### 🔗 **Live Demo:** [https://nexus-hr-saas.vercel.app/](https://nexus-hr-saas.vercel.app/)
 
 ---
 
-## 🚀 Key Features
+## 🎯 Why This Project Matters (Client Perspective)
+This project demonstrates my ability to:
+* **Design and build** end‑to‑end SaaS applications.
+* **Translate business requirements** into reliable software logic.
+* **Develop secure, scalable**, API‑driven systems.
+* **Deliver clean, responsive**, role‑based user interfaces.
 
-### 🖥️ Interactive Dashboard (Frontend)
-* **Real-Time Analytics:** Live widgets tracking total employees, pending leave requests, and payroll status.
-* **Responsive Design:** Fully responsive UI built with **Tailwind CSS**, optimized for desktop and mobile management.
-* **Role-Based Access:** specialized views for Admin vs. Standard Employees.
+It reflects the type of systems I build for clients: dashboards, internal tools, and SaaS platforms.
+
+---
+
+## 🚀 Core Features
+
+### 🖥️ Interactive Admin & Employee Dashboards
+* **Real‑time KPIs:** Total employees, payroll status, pending leave requests.
+* **Role‑based UI rendering:** Distinct views for Admin vs. Employee.
+* **Responsive layout:** Optimized for desktop and mobile devices.
 
 ### 💰 Automated Payroll Engine
-* **One-Click Processing:** Algorithms automatically calculate Gross Pay, Tax Deductions (20% logic), and Net Pay.
-* **Financial Integrity:** Prevents duplicate runs for the same month and generates immutable transaction records.
-* **Status Tracking:** Visual indicators for Paid vs. Pending salaries.
+* **One‑click payroll processing.**
+* **Automatic calculation of:**
+    * Gross salary
+    * Tax deductions (business rule enforcement)
+    * Net pay
+* **Safeguards:** Prevents duplicate payroll runs per month.
+* **Audit consistency:** Immutable payroll transaction records.
 
-### 📅 Smart Leave Management
-* **Conflict Detection:** Backend logic prevents overlapping leave requests before they are saved.
-* **Balance Tracking:** Automatic deduction from Annual/Sick leave quotas.
-* **Approval Workflow:** Managerial interface to Approve/Reject requests.
+### 📅 Smart Leave Management System
+* **Conflict detection:** Backend‑level validation for overlapping leave requests.
+* **Balance deduction:** Automatic tracking of Annual / Sick leave balances.
+* **Workflow:** Approval & rejection system for managers.
+* **Status tracking:** Clear updates for employees.
 
-### 🏢 Employee Directory
-* **Digital Onboarding:** Add new staff with automated validation for unique emails.
-* **Dynamic Profiles:** Integrates with `Pravatar` to generate consistent, unique profile images for every user.
-* **Search & Filter:** Instant client-side filtering for rapid team management.
+### 🏢 Employee Management & Directory
+* **Secure onboarding** with unique email validation.
+* **Dynamic employee profiles** with auto‑generated avatars.
+* **Instant client‑side search** and filtering.
+* **Clean, readable** employee data presentation.
+
+---
+
+## 🧠 Architecture Overview
+Nexus HR follows a decoupled full‑stack architecture, allowing the frontend and backend to scale independently.
+
+* **Frontend:** React SPA consuming REST APIs.
+* **Backend:** Django REST Framework handling business logic.
+* **Authentication:** JWT‑based with secure token refresh handling.
+* **Database:** PostgreSQL enforcing relational integrity.
 
 ---
 
 ## 🛠️ Technology Stack
 
-### **Frontend (Client-Side)**
-* **Framework:** React.js (Vite)
-* **Styling:** Tailwind CSS + Lucide Icons
-* **State Management:** React Hooks (`useState`, `useEffect`)
-* **Networking:** Axios with Interceptors for JWT Token refreshment
+### **Frontend**
+* **React.js (Vite)** – Fast, modern SPA framework.
+* **Tailwind CSS** – Responsive, utility‑first styling.
+* **Lucide Icons** – Clean, consistent iconography.
+* **React Hooks** – Modular state and lifecycle management.
+* **Axios** – Centralized API communication.
+* **JWT Interceptors** – Secure token refresh & session handling.
 
-### **Backend (Server-Side)**
-* **Framework:** Python / Django 5.0
-* **API Architecture:** Django REST Framework (DRF)
-* **Authentication:** JWT (JSON Web Tokens)
-* **Database:** PostgreSQL (Relational Data Integrity)
+### **Backend**
+* **Python / Django 5** – Robust backend framework.
+* **Django REST Framework** – RESTful API design.
+* **JWT Authentication** – Secure access control.
+* **PostgreSQL** – Relational database with enforced constraints.
 
 ### **DevOps & Infrastructure**
-* **Containerization:** Docker & Docker Compose (Multi-container orchestration)
-* **Storage:** WhiteNoise for static asset serving
+* **Docker & Docker Compose** – Multi‑container orchestration.
+* **Environment‑based configuration.**
+* **WhiteNoise** – Static asset handling.
 
 ---
 
-## 📸 System Previews
+## 🗂️ Database Design
+The database schema is designed around real business constraints, ensuring:
+* Referential integrity.
+* Accurate payroll calculations.
+* Reliable leave tracking.
 
-| **Payroll Engine** | **Employee Management** |
+📊 **ERD Diagram:** `see /docs/erd_diagram.png`
+
+---
+
+## 📸 Application Screenshots
+
+| **Payroll Processing** | **Employee Directory** |
 |:---:|:---:|
-| *Automated calculation of taxes and net pay.* | *responsive grid with real-time search.* |
-| ![Payroll](https://via.placeholder.com/400x200?text=Insert+Payroll+Screenshot) | ![Employees](https://via.placeholder.com/400x200?text=Insert+Employee+Screenshot) |
+| *(Place screenshot here)* | *(Place screenshot here)* |
+| *Automated salary calculations* | *Real‑time search & filtering* |
 
 ---
 
-## 🔧 Getting Started (Local Development)
-
-This project is fully containerized. You can launch the entire stack (Frontend + Backend + Database) with one command.
+## 🔧 Local Development Setup
+This project is fully containerized and can be run locally with a single command.
 
 ### Prerequisites
-* Docker Desktop installed.
-* Git.
+* Docker Desktop
+* Git
 
 ### Installation
 
 **1. Clone the repository**
 ```bash
-git clone [https://github.com/YOUR_USERNAME/nexus-hr-saas.git](https://github.com/YOUR_USERNAME/nexus-hr-saas.git)
+git clone [https://github.com/WANDART291/nexus-hr-saas.git](https://github.com/WANDART291/nexus-hr-saas.git)
 cd nexus-hr-saas
 
-2. Start the Application
-
-Bash
-
-docker compose up --build
 
 
-3. Run Database Migrations
+# 🏢 Nexus HR – Full‑Stack HR & Payroll SaaS Platform
 
-Bash
+> **Production‑ready workforce management system built to demonstrate real‑world SaaS architecture, business logic, and scalable full‑stack development.**
 
-docker compose exec web python manage.py migrate
+Nexus HR is a complete Human Resources & Payroll management platform designed for small to medium‑sized organizations. It goes beyond CRUD operations by implementing real business rules, secure authentication, and relational data integrity, similar to what real clients require in production systems.
 
-4. Access the System
-
-Frontend Dashboard: http://localhost:5173
-
-Backend API: http://localhost:8000/api/
-
-
-
-# Nexus HR - Enterprise Workforce Management System
-
-![Status](https://img.shields.io/badge/Status-Production_Ready-brightgreen)
-![React](https://img.shields.io/badge/Frontend-React_18-61DAFB)
-![Django](https://img.shields.io/badge/Backend-Django_Rest_Framework-green)
-![Database](https://img.shields.io/badge/Database-PostgreSQL-336791)
-![Docker](https://img.shields.io/badge/Deployment-Docker_Containerized-2496ed)
-
-**Nexus HR** is a complete, full-stack SaaS platform designed to modernize workforce management. Unlike simple administrative tools, Nexus HR provides a **decoupled microservices architecture** combining a high-performance **React** frontend with a robust **Django** calculation engine.
-
-It automates the most complex parts of HR: payroll taxation logic, real-time leave conflict detection, and secure employee data management.
+### 🔗 **Live Demo:** [https://nexus-hr-saas.vercel.app/](https://nexus-hr-saas.vercel.app/)
 
 ---
 
-## 🚀 Key Features
+## 🎯 Why This Project Matters (Client Perspective)
+This project demonstrates my ability to:
+* **Design and build** end‑to‑end SaaS applications.
+* **Translate business requirements** into reliable software logic.
+* **Develop secure, scalable**, API‑driven systems.
+* **Deliver clean, responsive**, role‑based user interfaces.
 
-### 🖥️ Interactive Dashboard (Frontend)
-* **Real-Time Analytics:** Live widgets tracking total employees, pending leave requests, and payroll status.
-* **Responsive Design:** Fully responsive UI built with **Tailwind CSS**, optimized for desktop and mobile management.
-* **Role-Based Access:** specialized views for Admin vs. Standard Employees.
+It reflects the type of systems I build for clients: dashboards, internal tools, and SaaS platforms.
+
+---
+
+## 🚀 Core Features
+
+### 🖥️ Interactive Admin & Employee Dashboards
+* **Real‑time KPIs:** Total employees, payroll status, pending leave requests.
+* **Role‑based UI rendering:** Distinct views for Admin vs. Employee.
+* **Responsive layout:** Optimized for desktop and mobile devices.
 
 ### 💰 Automated Payroll Engine
-* **One-Click Processing:** Algorithms automatically calculate Gross Pay, Tax Deductions (20% logic), and Net Pay.
-* **Financial Integrity:** Prevents duplicate runs for the same month and generates immutable transaction records.
-* **Status Tracking:** Visual indicators for Paid vs. Pending salaries.
+* **One‑click payroll processing.**
+* **Automatic calculation of:**
+    * Gross salary
+    * Tax deductions (business rule enforcement)
+    * Net pay
+* **Safeguards:** Prevents duplicate payroll runs per month.
+* **Audit consistency:** Immutable payroll transaction records.
 
-### 📅 Smart Leave Management
-* **Conflict Detection:** Backend logic prevents overlapping leave requests before they are saved.
-* **Balance Tracking:** Automatic deduction from Annual/Sick leave quotas.
-* **Approval Workflow:** Managerial interface to Approve/Reject requests.
+### 📅 Smart Leave Management System
+* **Conflict detection:** Backend‑level validation for overlapping leave requests.
+* **Balance deduction:** Automatic tracking of Annual / Sick leave balances.
+* **Workflow:** Approval & rejection system for managers.
+* **Status tracking:** Clear updates for employees.
 
-### 🏢 Employee Directory
-* **Digital Onboarding:** Add new staff with automated validation for unique emails.
-* **Dynamic Profiles:** Integrates with `Pravatar` to generate consistent, unique profile images for every user.
-* **Search & Filter:** Instant client-side filtering for rapid team management.
+### 🏢 Employee Management & Directory
+* **Secure onboarding** with unique email validation.
+* **Dynamic employee profiles** with auto‑generated avatars.
+* **Instant client‑side search** and filtering.
+* **Clean, readable** employee data presentation.
+
+---
+
+## 🧠 Architecture Overview
+Nexus HR follows a decoupled full‑stack architecture, allowing the frontend and backend to scale independently.
+
+* **Frontend:** React SPA consuming REST APIs.
+* **Backend:** Django REST Framework handling business logic.
+* **Authentication:** JWT‑based with secure token refresh handling.
+* **Database:** PostgreSQL enforcing relational integrity.
 
 ---
 
 ## 🛠️ Technology Stack
 
-### **Frontend (Client-Side)**
-* **Framework:** React.js (Vite)
-* **Styling:** Tailwind CSS + Lucide Icons
-* **State Management:** React Hooks (`useState`, `useEffect`)
-* **Networking:** Axios with Interceptors for JWT Token refreshment
+### **Frontend**
+* **React.js (Vite)** – Fast, modern SPA framework.
+* **Tailwind CSS** – Responsive, utility‑first styling.
+* **Lucide Icons** – Clean, consistent iconography.
+* **React Hooks** – Modular state and lifecycle management.
+* **Axios** – Centralized API communication.
+* **JWT Interceptors** – Secure token refresh & session handling.
 
-### **Backend (Server-Side)**
-* **Framework:** Python / Django 5.0
-* **API Architecture:** Django REST Framework (DRF)
-* **Authentication:** JWT (JSON Web Tokens)
-* **Database:** PostgreSQL (Relational Data Integrity)
-
-## 🏗️ Database Architecture
-![ERD Diagram](./docs/erd_diagram.png)
+### **Backend**
+* **Python / Django 5** – Robust backend framework.
+* **Django REST Framework** – RESTful API design.
+* **JWT Authentication** – Secure access control.
+* **PostgreSQL** – Relational database with enforced constraints.
 
 ### **DevOps & Infrastructure**
-* **Containerization:** Docker & Docker Compose (Multi-container orchestration)
-* **Storage:** WhiteNoise for static asset serving
+* **Docker & Docker Compose** – Multi‑container orchestration.
+* **Environment‑based configuration.**
+* **WhiteNoise** – Static asset handling.
 
 ---
 
-## 📸 System Previews
+## 🗂️ Database Design
+The database schema is designed around real business constraints, ensuring:
+* Referential integrity.
+* Accurate payroll calculations.
+* Reliable leave tracking.
 
-| **Payroll Engine** | **Employee Management** |
+📊 **ERD Diagram:** `see /docs/erd_diagram.png`
+
+---
+
+## 📸 Application Screenshots
+
+| **Payroll Processing** | **Employee Directory** |
 |:---:|:---:|
-| *Automated calculation of taxes and net pay.* | *responsive grid with real-time search.* |
-| ![Payroll](https://via.placeholder.com/400x200?text=Insert+Payroll+Screenshot) | ![Employees](https://via.placeholder.com/400x200?text=Insert+Employee+Screenshot) |
+| *(Place screenshot here)* | *(Place screenshot here)* |
+| *Automated salary calculations* | *Real‑time search & filtering* |
 
 ---
 
-## 🔧 Getting Started (Local Development)
-
-This project is fully containerized. You can launch the entire stack (Frontend + Backend + Database) with one command.
+## 🔧 Local Development Setup
+This project is fully containerized and can be run locally with a single command.
 
 ### Prerequisites
-* Docker Desktop installed.
-* Git.
+* Docker Desktop
+* Git
 
 ### Installation
 
 **1. Clone the repository**
 ```bash
-git clone [https://github.com/YOUR_USERNAME/nexus-hr-saas.git](https://github.com/YOUR_USERNAME/nexus-hr-saas.git)
+git clone [https://github.com/WANDART291/nexus-hr-saas.git](https://github.com/WANDART291/nexus-hr-saas.git)
 cd nexus-hr-saas
-2. Start the Application
+2. Start the full stack (frontend + backend + database)
 
 Bash
 
 docker compose up --build
-3. Run Database Migrations
+3. Run database migrations
 
 Bash
 
 docker compose exec web python manage.py migrate
-4. Access the System
+Access the Application
+Frontend: http://localhost:5173
 
-Frontend Dashboard: http://localhost:5173
+Backend API: http://localhost:8000/api
 
-Backend API: http://localhost:8000/api/
+🧪 Engineering Highlights
+✅ Centralized API error handling and loading states.
 
-🗺️ Roadmap & Architecture
-Current Version (v1.0): REST API architecture for maximum compatibility and ease of debugging.
+✅ Secure authentication lifecycle with token refresh.
 
-Future Version (v2.0): Planned refactor to GraphQL to optimize data fetching for mobile clients.
+✅ Clean separation of concerns between UI and business logic.
 
-Deployment: configured for hybrid cloud deployment (Vercel Frontend + Render Backend).
+✅ Business‑rule validation enforced at the backend level.
+
+🚀 Roadmap
+[ ] Frontend migration to TypeScript.
+
+[ ] Improved data‑fetching optimization.
+
+[ ] Advanced role & permission system.
+
+[ ] Optional GraphQL API layer for mobile clients.
 
 👤 Author
-Wandile Khanyile Full Stack Software Engineer | Python & React Specialist
+Wandile Khanyile
 
-Built with ❤️ in South Africa.
+Full‑Stack Software Engineer
+
+Python • Django • React • PostgreSQL
+
