@@ -1,21 +1,14 @@
 from django.db import models
-from core.models import Employee
+from core.models import Employee  # We link reviews to the Employee profile
 
 class PerformanceReview(models.Model):
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    review_date = models.DateField()
-    score = models.DecimalField(max_digits=3, decimal_places=1) # e.g. 4.5
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='reviews')
+    reviewer = models.ForeignKey('core.User', on_delete=models.SET_NULL, null=True, related_name='given_reviews')
+    title = models.CharField(max_length=100)  # e.g., "Q1 Review"
+    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])  # Score 1-5
     feedback = models.TextField()
+    goals = models.TextField(blank=True, null=True)  # Goals for next time
+    date_created = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.employee} - {self.score}"
-
-class Goal(models.Model):
-    title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    assigned_to = models.ManyToManyField(Employee) # Goals can be for multiple people
-    due_date = models.DateField()
-    progress = models.IntegerField(default=0) # 0 to 100
-
-    def __str__(self):
-        return self.title
+        return f"{self.title} - {self.employee}"

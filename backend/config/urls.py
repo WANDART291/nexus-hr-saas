@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include  # <--- IMPORT ADDED HERE
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from core import views as core_views
 from leave import views as leave_views
@@ -12,8 +12,7 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-    # Core (THIS WAS THE BROKEN LINE)
-    # We changed 'get_employees' to 'employee_list' to match your views.py
+    # Core
     path('api/employees/', core_views.employee_list, name='employee_list'),
 
     # Leave
@@ -21,4 +20,7 @@ urlpatterns = [
     
     # Payroll
     path('api/payroll/', payroll_views.payroll_list, name='payroll_list'),
+
+    # Performance
+    path('api/performance/', include('performance.urls')),
 ]
