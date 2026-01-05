@@ -4,7 +4,8 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Employees from './pages/Employees';
 import Leave from './pages/Leave'; 
-import Payroll from './pages/Payroll'; // <--- 1. IMPORT ADDED HERE
+import Payroll from './pages/Payroll';
+import Performance from './pages/Performance'; // <--- 1. NEW IMPORT
 import Layout from './components/Layout';
 
 // A special wrapper that checks if you are logged in
@@ -45,11 +46,19 @@ function App() {
           </PrivateRoute>
         } />
 
-        {/* --- 2. NEW PAYROLL ROUTE ADDED HERE --- */}
         <Route path="/payroll" element={
           <PrivateRoute>
             <Layout>
               <Payroll />
+            </Layout>
+          </PrivateRoute>
+        } />
+
+        {/* --- 2. NEW PERFORMANCE ROUTE ADDED HERE --- */}
+        <Route path="/performance" element={
+          <PrivateRoute>
+            <Layout>
+              <Performance />
             </Layout>
           </PrivateRoute>
         } />
