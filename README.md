@@ -120,7 +120,7 @@ The database schema is designed around real business constraints, ensuring:
 
 | **Leave Management** | **Mobile Responsive** |
 |:---:|:---:|
-| ![Leave](docs/screenshots/leave_preview.png) | ![Mobile](https://via.placeholder.com/600x300?text=Mobile+View+Available) |
+| ![Leave](docs/screenshots/leave_preview.png) | ![Mobile](docs/screenshots/mobile_preview.jpg) |
 | *Leave Balance & History* | *Fully functional on mobile devices* |
 
 ---
