@@ -5,21 +5,16 @@ import dj_database_url  # <--- Added for Render Database
 
 """
 Django settings for config project.
-Updated for Vercel & Render Production.
+Updated for Vercel & Render Production + GraphQL Support.
 """
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-je0lq1l+_tp9%p+8@#=lq!l=!yumds!tegn@_b!5m5ifb3412s')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# We keep it True for now so you can see errors in the logs if they happen.
 DEBUG = True 
 
 # Allow all hosts (Crucial for Render)
@@ -37,10 +32,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third-Party Apps
-    'graphene_django',
+    'graphene_django',      # <--- GraphQL Core
     'rest_framework',
     'rest_framework_simplejwt', 
-    'corsheaders',  # <--- Required for Vercel
+    'corsheaders',
 
     # Local Apps
     'core',
@@ -92,9 +87,7 @@ DATABASES = {
     )
 }
 
-
 AUTH_USER_MODEL = 'core.User'
-
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -104,29 +97,24 @@ AUTH_PASSWORD_VALIDATORS = [
     { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
 
-
 # Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-
 # --- STATIC FILES (CSS, JS, Images) ---
-# Required for Render to display the Admin Panel correctly
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# --- CORS & CSRF SETTINGS (The Fix for Vercel) ---
+# --- CORS & CSRF SETTINGS ---
 CORS_ALLOW_ALL_ORIGINS = True 
 CORS_ALLOW_CREDENTIALS = True
 
-# We trust Vercel and Render to talk to this backend
 CSRF_TRUSTED_ORIGINS = [
     "https://nexus-hr-saas.onrender.com",
     "https://nexus-hr-saas.vercel.app",
@@ -136,7 +124,6 @@ CSRF_TRUSTED_ORIGINS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        # Removed 'SessionAuthentication' to prevent CSRF errors on Vercel login
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -149,7 +136,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
-# --- GRAPHQL SETTINGS ---
+# --- GRAPHQL SETTINGS (Fixed & Consolidated) ---
 GRAPHENE = {
     "SCHEMA": "config.schema.schema",
     "MIDDLEWARE": [

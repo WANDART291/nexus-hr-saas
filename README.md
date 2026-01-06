@@ -59,6 +59,26 @@ Nexus HR follows a decoupled full‑stack architecture, allowing the frontend an
 
 ---
 
+## 🔌 API Architecture: Dual-Protocol Support (New!) 
+
+Nexus HR implements a hybrid API strategy to demonstrate versatility and performance optimization:
+
+### **1. REST API (Standard)**
+* **Use Case:** Web Dashboard & legacy integrations.
+* **Tech:** Django Rest Framework (DRF).
+* **Endpoints:** Standard CRUD for Employees, Payroll, and Leave.
+
+### **2. GraphQL API (Performance Optimized)**
+* **Use Case:** Mobile clients & complex data fetching.
+* **Tech:** Graphene-Django.
+* **Key Capabilities:**
+    * **No Over-fetching:** Clients request *only* the specific fields they need (e.g., just names, no emails).
+    * **Nested Queries:** Fetches Employee profile + Payroll History + Leave Balance in a **single request** (replaces 3 REST calls).
+    * **Mutations:** Type-safe data creation (e.g., `createEmployee`).
+* **Playground:** Integrated GraphiQL interface available at `/graphql/` for testing.
+
+---
+
 ## 🛠️ Technology Stack
 
 ### **Frontend**
@@ -72,6 +92,7 @@ Nexus HR follows a decoupled full‑stack architecture, allowing the frontend an
 ### **Backend**
 * **Python / Django 5** – Robust backend framework.
 * **Django REST Framework** – RESTful API design.
+* **Graphene Django** – GraphQL schema and resolvers.
 * **JWT Authentication** – Secure access control.
 * **PostgreSQL** – Relational database with enforced constraints.
 
@@ -115,129 +136,12 @@ This project is fully containerized and can be run locally with a single command
 git clone [https://github.com/WANDART291/nexus-hr-saas.git](https://github.com/WANDART291/nexus-hr-saas.git)
 cd nexus-hr-saas
 
-
-
-# 🏢 Nexus HR – Full‑Stack HR & Payroll SaaS Platform
-
-> **Production‑ready workforce management system built to demonstrate real‑world SaaS architecture, business logic, and scalable full‑stack development.**
-
-Nexus HR is a complete Human Resources & Payroll management platform designed for small to medium‑sized organizations. It goes beyond CRUD operations by implementing real business rules, secure authentication, and relational data integrity, similar to what real clients require in production systems.
-
-### 🔗 **Live Demo:** [https://nexus-hr-saas.vercel.app/](https://nexus-hr-saas.vercel.app/)
-
----
-
-## 🎯 Why This Project Matters (Client Perspective)
-This project demonstrates my ability to:
-* **Design and build** end‑to‑end SaaS applications.
-* **Translate business requirements** into reliable software logic.
-* **Develop secure, scalable**, API‑driven systems.
-* **Deliver clean, responsive**, role‑based user interfaces.
-
-It reflects the type of systems I build for clients: dashboards, internal tools, and SaaS platforms.
-
----
-
-## 🚀 Core Features
-
-### 🖥️ Interactive Admin & Employee Dashboards
-* **Real‑time KPIs:** Total employees, payroll status, pending leave requests.
-* **Role‑based UI rendering:** Distinct views for Admin vs. Employee.
-* **Responsive layout:** Optimized for desktop and mobile devices.
-
-### 💰 Automated Payroll Engine
-* **One‑click payroll processing.**
-* **Automatic calculation of:**
-    * Gross salary
-    * Tax deductions (business rule enforcement)
-    * Net pay
-* **Safeguards:** Prevents duplicate payroll runs per month.
-* **Audit consistency:** Immutable payroll transaction records.
-
-### 📅 Smart Leave Management System
-* **Conflict detection:** Backend‑level validation for overlapping leave requests.
-* **Balance deduction:** Automatic tracking of Annual / Sick leave balances.
-* **Workflow:** Approval & rejection system for managers.
-* **Status tracking:** Clear updates for employees.
-
-### 🏢 Employee Management & Directory
-* **Secure onboarding** with unique email validation.
-* **Dynamic employee profiles** with auto‑generated avatars.
-* **Instant client‑side search** and filtering.
-* **Clean, readable** employee data presentation.
-
----
-
-## 🧠 Architecture Overview
-Nexus HR follows a decoupled full‑stack architecture, allowing the frontend and backend to scale independently.
-
-* **Frontend:** React SPA consuming REST APIs.
-* **Backend:** Django REST Framework handling business logic.
-* **Authentication:** JWT‑based with secure token refresh handling.
-* **Database:** PostgreSQL enforcing relational integrity.
-
----
-
-## 🛠️ Technology Stack
-
-### **Frontend**
-* **React.js (Vite)** – Fast, modern SPA framework.
-* **Tailwind CSS** – Responsive, utility‑first styling.
-* **Lucide Icons** – Clean, consistent iconography.
-* **React Hooks** – Modular state and lifecycle management.
-* **Axios** – Centralized API communication.
-* **JWT Interceptors** – Secure token refresh & session handling.
-
-### **Backend**
-* **Python / Django 5** – Robust backend framework.
-* **Django REST Framework** – RESTful API design.
-* **JWT Authentication** – Secure access control.
-* **PostgreSQL** – Relational database with enforced constraints.
-
-### **DevOps & Infrastructure**
-* **Docker & Docker Compose** – Multi‑container orchestration.
-* **Environment‑based configuration.**
-* **WhiteNoise** – Static asset handling.
-
----
-
-## 🗂️ Database Design
-The database schema is designed around real business constraints, ensuring:
-* Referential integrity.
-* Accurate payroll calculations.
-* Reliable leave tracking.
-
-📊 **ERD Diagram:** `see /docs/erd_diagram.png`
-
----
-
-## 📸 Application Screenshots
-
-| **Payroll Processing** | **Employee Directory** |
-|:---:|:---:|
-| *(Place screenshot here)* | *(Place screenshot here)* |
-| *Automated salary calculations* | *Real‑time search & filtering* |
-
----
-
-## 🔧 Local Development Setup
-This project is fully containerized and can be run locally with a single command.
-
-### Prerequisites
-* Docker Desktop
-* Git
-
-### Installation
-
-**1. Clone the repository**
-```bash
-git clone [https://github.com/WANDART291/nexus-hr-saas.git](https://github.com/WANDART291/nexus-hr-saas.git)
-cd nexus-hr-saas
 2. Start the full stack (frontend + backend + database)
 
 Bash
 
 docker compose up --build
+
 3. Run database migrations
 
 Bash
@@ -248,6 +152,8 @@ Frontend: http://localhost:5173
 
 Backend API: http://localhost:8000/api
 
+GraphQL Playground: http://localhost:8000/graphql/
+
 🧪 Engineering Highlights
 ✅ Centralized API error handling and loading states.
 
@@ -257,19 +163,10 @@ Backend API: http://localhost:8000/api
 
 ✅ Business‑rule validation enforced at the backend level.
 
-🚀 Roadmap
-[ ] Frontend migration to TypeScript.
-
-[ ] Improved data‑fetching optimization.
-
-[ ] Advanced role & permission system.
-
-[ ] Optional GraphQL API layer for mobile clients.
-
 👤 Author
 Wandile Khanyile
 
 Full‑Stack Software Engineer
 
-Python • Django • React • PostgreSQL
+Python • Django • React • GraphQL • PostgreSQL
 

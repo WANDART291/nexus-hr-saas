@@ -1,157 +1,61 @@
 import graphene
 from graphene_django import DjangoObjectType
-from django.contrib.auth import get_user_model
-from .models import EmployeeProfile, Department, OrganizationTenant, Role
+from .models import Employee
 
-User = get_user_model()
-
-# ===========================================
-# 1. TYPES (Reading Data)
-# ===========================================
-
-class UserType(DjangoObjectType):
-    class Meta:
-        model = User
-        fields = ("id", "username", "email", "is_active", "is_staff")
-
-class OrganizationType(DjangoObjectType):
-    class Meta:
-        model = OrganizationTenant
-        fields = ("id", "name")
-
-class DepartmentType(DjangoObjectType):
-    class Meta:
-        model = Department
-        fields = ("id", "name", "organization")
-
-class RoleType(DjangoObjectType):
-    class Meta:
-        model = Role
-        fields = ("id", "name", "organization")
-
+# --- 1. The Employee Type (Read) ---
 class EmployeeType(DjangoObjectType):
     class Meta:
-        model = EmployeeProfile
-        fields = ("id", "user", "organization", "department", "role", "manager", "subordinates")
+        model = Employee
+        fields = ("id", "first_name", "last_name", "email", "department", "role", "is_active")
 
-# ===========================================
-# 2. QUERIES (Fetching Data)
-# ===========================================
+    # Link to Payroll (Reverse Lookup)
+    payroll_history = graphene.List("payroll.schema.PayrollRecordType")
 
-class Query(graphene.ObjectType):
-    all_users = graphene.List(UserType)
-    all_employees = graphene.List(EmployeeType)
-    all_organizations = graphene.List(OrganizationType)
-    my_profile = graphene.Field(EmployeeType)
+    def resolve_payroll_history(self, info):
+        return self.payrollrecord_set.all()
 
-    def resolve_all_users(self, info):
-        return User.objects.all()
-
-    def resolve_all_employees(self, info):
-        # Optimization: select_related fetches connected data in one query
-        return EmployeeProfile.objects.select_related('user', 'organization', 'department', 'role').all()
-
-    def resolve_all_organizations(self, info):
-        return OrganizationTenant.objects.all()
-
-    def resolve_my_profile(self, info):
-        user = info.context.user
-        if user.is_anonymous:
-            raise Exception("Not Logged In")
-        return EmployeeProfile.objects.get(user=user)
-
-# ===========================================
-# 3. MUTATIONS (Creating & Updating Data)
-# ===========================================
-
-class CreateOrganization(graphene.Mutation):
-    class Arguments:
-        name = graphene.String(required=True)
-
-    organization = graphene.Field(OrganizationType)
-
-    def mutate(self, info, name):
-        org = OrganizationTenant.objects.create(name=name)
-        return CreateOrganization(organization=org)
-
+# --- 2. The Create Mutation (Write) ---
 class CreateEmployee(graphene.Mutation):
-    class Arguments:
-        username = graphene.String(required=True)
-        password = graphene.String(required=True)
-        email = graphene.String(required=True)
-        organization_id = graphene.ID(required=True)
-
+    # The output of this mutation (what sends back to the frontend)
     employee = graphene.Field(EmployeeType)
 
-    def mutate(self, info, username, password, email, organization_id):
-        # 1. Get the Org
-        org = OrganizationTenant.objects.get(pk=organization_id)
-        
-        # 2. Create the User
-        user = User(username=username, email=email)
-        user.set_password(password)
-        user.save()
+    # The inputs (arguments) required to create an employee
+    class Arguments:
+        first_name = graphene.String(required=True)
+        last_name = graphene.String(required=True)
+        email = graphene.String(required=True)
+        department = graphene.String(required=True)
+        role = graphene.String(required=True)
 
-        # 3. Create the Employee Profile linking them
-        employee = EmployeeProfile.objects.create(
-            user=user,
-            organization=org
+    # The Logic (Save to DB)
+    def mutate(self, info, first_name, last_name, email, department, role):
+        employee = Employee(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            department=department,
+            role=role,
+            is_active=True
         )
-        
+        employee.save()
         return CreateEmployee(employee=employee)
 
-class CreateDepartment(graphene.Mutation):
-    class Arguments:
-        name = graphene.String(required=True)
-        organization_id = graphene.ID(required=True)
+# --- 3. The Query Class (Read Operations) ---
+class Query(graphene.ObjectType):
+    all_employees = graphene.List(EmployeeType)
+    employee_by_id = graphene.Field(EmployeeType, id=graphene.Int())
 
-    department = graphene.Field(DepartmentType)
+    def resolve_all_employees(root, info):
+        return Employee.objects.all()
 
-    def mutate(self, info, name, organization_id):
-        org = OrganizationTenant.objects.get(pk=organization_id)
-        dept = Department.objects.create(name=name, organization=org)
-        return CreateDepartment(department=dept)
+    def resolve_employee_by_id(root, info, id):
+        try:
+            return Employee.objects.get(pk=id)
+        except Employee.DoesNotExist:
+            return None
 
-class CreateRole(graphene.Mutation):
-    class Arguments:
-        name = graphene.String(required=True)
-        organization_id = graphene.ID(required=True)
-
-    role = graphene.Field(RoleType)
-
-    def mutate(self, info, name, organization_id):
-        org = OrganizationTenant.objects.get(pk=organization_id)
-        role_obj = Role.objects.create(name=name, organization=org)
-        return CreateRole(role=role_obj)
-
-class UpdateEmployeeProfile(graphene.Mutation):
-    class Arguments:
-        employee_id = graphene.ID(required=True)
-        department_id = graphene.ID(required=True)
-        role_id = graphene.ID(required=True)
-
-    employee = graphene.Field(EmployeeType)
-
-    def mutate(self, info, employee_id, department_id, role_id):
-        # Fetch objects
-        emp = EmployeeProfile.objects.get(pk=employee_id)
-        dept = Department.objects.get(pk=department_id)
-        role = Role.objects.get(pk=role_id)
-        
-        # Assign relationships
-        emp.department = dept
-        emp.role = role
-        emp.save()
-        
-        return UpdateEmployeeProfile(employee=emp)
-
-# ===========================================
-# 4. REGISTER MUTATIONS
-# ===========================================
-
+# --- 4. The Mutation Class (Write Operations) ---
 class Mutation(graphene.ObjectType):
-    create_organization = CreateOrganization.Field()
     create_employee = CreateEmployee.Field()
-    create_department = CreateDepartment.Field()
-    create_role = CreateRole.Field()
-    update_employee_profile = UpdateEmployeeProfile.Field()
+
+    
