@@ -8,6 +8,10 @@ Nexus HR is a complete Human Resources & Payroll management platform designed fo
 
 ---
 
+> **🧪 Demo Access:**
+> * **Username:** `client`
+> * **Password:** `HireMe123!`
+
 ## 🎯 Why This Project Matters (Client Perspective)
 This project demonstrates my ability to:
 * **Design and build** end‑to‑end SaaS applications.
